@@ -15,8 +15,18 @@ def create_app():
 
     db.init_app(app)
     migrate.init_app(app, db)
-    
-    from .routes.hello_route import hello as hello_route
-    app.register_blueprint(hello_route)
+
+    from .routes .tipos_routes import tipo as tipos_routes
+    from .routes .banco_routes import banco as banco_routes
+    from .routes .leilao_routes import leilao as leilao_routes
+    from .routes .cliente_routes import clientes as cliente_routes
+    from .routes .entidade_routes import entidade as entidade_routes
+    from .routes .entidade_cliente_routes import entidadecliente as entidade_cliente_routes
+    app.register_blueprint(tipos_routes)
+    app.register_blueprint(banco_routes)
+    app.register_blueprint(leilao_routes)
+    app.register_blueprint(cliente_routes)
+    app.register_blueprint(entidade_routes)
+    app.register_blueprint(entidade_cliente_routes)
 
     return app
