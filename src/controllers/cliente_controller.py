@@ -24,3 +24,38 @@ def get_banco_pessoa():
         }
         result.append(datas)
     return jsonify(result), 200
+
+
+def create(data):
+    try:
+        new_cliente = Cliente(nome=data['nome'],
+            cpfcnpj=data['cpfcnpj'],
+            auth=data['auth'])
+        db.session.add(new_cliente)
+        db.session.commit()
+        return jsonify({'message': 'cliente created successfully'}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'An unexpected error occurred'}), 500
+
+def delete(id):
+    try:
+        cliente = Cliente.query.get_or_404(id)
+        db.session.delete(cliente)
+        db.session.commit()
+        return jsonify({'message': 'banco was deleted successfully'}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'An unexpected error occurred'}), 500
+
+def update(data, id):
+    try:
+        cliente = Cliente.query.get_or_404(id)
+        cliente.nome=data['nome']
+        cliente.cpfcnpj=data['cpfcnpj']
+        cliente.auth=data['auth']
+        db.session.commit()
+        return jsonify({'message': 'cliente was updated successfully'}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'An unexpected error occurred'}), 500
