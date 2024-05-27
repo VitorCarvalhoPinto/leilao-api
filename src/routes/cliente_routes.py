@@ -1,12 +1,12 @@
 from flask import Blueprint, request, jsonify
 from .. import db
-from ..controllers.cliente_controller import get, get_banco_pessoa, create, delete, update
+from ..controllers.cliente_controller import get, get_banco_pessoa, create, delete, update, login
 
 clientes = Blueprint('clientes', __name__)
 
 
 @clientes.route('/clientes', methods=['GET'])
-def get_cliente(): return get()
+def get_cliente(): return get(request.args.get('id', None))
 
 @clientes.route('/clientes', methods=['POST'])
 def create_cliente(): return create(request.get_json())
@@ -19,3 +19,6 @@ def update_cliente(id): return update(request.get_json(), id)
 
 @clientes.route('/getassociate', methods=['GET'])
 def get_associate(): return get_banco_pessoa()
+
+@clientes.route('/login', methods=['GET'])
+def get_login(): return login(request.args.get('id', None))

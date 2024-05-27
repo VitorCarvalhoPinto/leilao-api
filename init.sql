@@ -18,8 +18,8 @@ CREATE TABLE public.alembic_version (
 
 CREATE TABLE public.banco (
 	id serial4 NOT NULL,
-	nome bpchar(50) NULL,
-	cnpj bpchar(30) NULL,
+	nome varchar(50) NULL,
+	cnpj varchar(30) NULL,
 	CONSTRAINT banco_pkey PRIMARY KEY (id)
 );
 
@@ -32,8 +32,8 @@ CREATE TABLE public.banco (
 
 CREATE TABLE public.cliente (
 	id serial4 NOT NULL,
-	nome bpchar(40) NULL,
-	cpfcnpj bpchar(50) NOT NULL,
+	nome varchar(40) NULL,
+	cpfcnpj varchar(50) NOT NULL,
 	auth bool NULL,
 	CONSTRAINT cliente_cpfcnpj_key UNIQUE (cpfcnpj),
 	CONSTRAINT cliente_pkey PRIMARY KEY (id)
@@ -48,7 +48,7 @@ CREATE TABLE public.cliente (
 
 CREATE TABLE public.tipos (
 	id serial4 NOT NULL,
-	tipo bpchar(50) NULL,
+	tipo varchar(50) NULL,
 	CONSTRAINT tipos_pkey PRIMARY KEY (id)
 );
 
@@ -64,13 +64,13 @@ CREATE TABLE public.leilao (
 	id_tipo int4 NOT NULL,
 	id_banco int4 NOT NULL,
 	id_cliente int4 NOT NULL,
-	nome bpchar(20) NULL,
+	nome varchar(20) NULL,
 	data_abertura date NOT NULL,
 	data_fechamento date NOT NULL,
-	endereco bpchar(50) NULL,
-	cidade bpchar(50) NULL,
-	estado bpchar(50) NULL,
-	link bpchar(50) NULL,
+	endereco varchar(50) NULL,
+	cidade varchar(50) NULL,
+	estado varchar(50) NULL,
+	link varchar(50) NULL,
 	CONSTRAINT leilao_pkey PRIMARY KEY (id),
 	CONSTRAINT leilao_banco_fk FOREIGN KEY (id_banco) REFERENCES public.banco(id),
 	CONSTRAINT leilao_cliente_fk FOREIGN KEY (id_cliente) REFERENCES public.cliente(id),
@@ -88,10 +88,10 @@ CREATE TABLE public.entidade (
 	id serial4 NOT NULL,
 	id_tipo int4 NOT NULL,
 	id_leilao int4 NOT NULL,
-	nome bpchar(20) NULL,
-	modelo bpchar(30) NULL,
-	endereco bpchar(50) NULL,
-	descricao bpchar(50) NULL,
+	nome varchar(20) NULL,
+	modelo varchar(30) NULL,
+	endereco varchar(50) NULL,
+	descricao varchar(50) NULL,
 	min_lance money NOT NULL,
 	min_incremento money NOT NULL,
 	CONSTRAINT entidade_pkey PRIMARY KEY (id),

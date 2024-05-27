@@ -2,14 +2,19 @@ from flask import jsonify
 from ..models import Leilao
 from .. import db
 
-def get_filter(id_tipo=None, nome=None):
+def get_filter(id_tipo=None, nome=None, id_cliente=None, id_leilao=None):
     try:
         query = Leilao.query
 
         if id_tipo:
             query = query.filter(Leilao.id_tipo == id_tipo)
         if nome:
-            query = query.filter(Leilao.nome == nome)
+            query = query.filter(Leilao.nome.like(f'%{nome}%'))
+        if id_cliente:
+            query = query.filter(Leilao.id_cliente == id_cliente)
+        if id_leilao:
+            query = query.filter(Leilao.id_leilao == id_leilao)    
+        
         leilao = query.order_by('id').all()
 
         return jsonify([{'id' : data.id, 
@@ -29,6 +34,34 @@ def get_filter(id_tipo=None, nome=None):
         db.session.rollback()
         return jsonify({'error': 'An unexpected error occurred'}), 500
     
+def get_one(id=None):
+    try:
+        query = Leilao.query
+
+        if id:
+            query = query.filter(Leilao.id == id) 
+
+        leilao = query.order_by('id').all()
+
+        return jsonify([{'id' : data.id, 
+                        'id_tipo' : data.id_tipo,
+                        'id_banco' : data.id_banco,
+                        'id_cliente' : data.id_cliente,
+                        'nome' : data.nome,
+                        'data_abertura' : data.data_abertura,
+                        'data_fechamento' : data.data_fechamento,
+                        'endereco' : data.endereco,
+                        'cidade' : data.cidade ,
+                        'estado' : data.estado,
+                        'link' : data.link} 
+                        for data in leilao]), 201
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'An unexpected error occurred'}), 500
+    
+
+
 def create(data):
     try:
         new_leilao = Leilao(id_tipo=data['id_tipo'],

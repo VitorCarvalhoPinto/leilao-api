@@ -7,7 +7,7 @@ def get_filter(id=None):
     try:
         query = Banco.query
         if id:
-            query = query.filter(Banco.id == id)
+            query = query.filter(Banco.cnpj == id)
 
         bancos = query.order_by('id').all()
 
@@ -38,6 +38,7 @@ def delete(id):
         return jsonify({'message': 'banco was deleted successfully'}), 201
     except Exception as e:
         db.session.rollback()
+        print(e)
         return jsonify({'error': 'An unexpected error occurred'}), 500
 
 def update(data, id):
