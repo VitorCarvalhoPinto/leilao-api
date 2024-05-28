@@ -7,7 +7,7 @@ entidadecliente = Blueprint('entidadecliente', __name__)
 
 
 @entidadecliente.route('/entidadecliente', methods=['GET'])
-def get_entidadeCliente(): return get()
+def get_entidadeCliente(): return get(request.args.get('identidade', None))
 
 @entidadecliente.route('/entidadecliente', methods=['POST'])
 def create_entidadecliente(): return create(request.get_json())
